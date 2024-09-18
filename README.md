@@ -1,4 +1,4 @@
-# main/testing
+# ppo/backend
 
 
 
@@ -6,9 +6,9 @@
 
 Download links:
 
-SSH clone URL: ssh://git@git.jetbrains.space/pikasoft/main/testing.git
+SSH clone URL: ssh://git@git.jetbrains.space/pikasoft/ppo/backend.git
 
-HTTPS clone URL: https://git.jetbrains.space/pikasoft/main/testing.git
+HTTPS clone URL: https://git.jetbrains.space/pikasoft/ppo/backend.git
 
 
 
