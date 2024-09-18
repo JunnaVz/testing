@@ -10,3 +10,5 @@ crashlytics-build.properties
 fabric.properties
 qodana.yaml
 *.log
+*.iml
+*.ехе
