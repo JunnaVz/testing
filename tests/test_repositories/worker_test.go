@@ -31,8 +31,8 @@ var testWorkerRepositoryCreateSuccess = []struct {
 				Address:     "Address",
 				PhoneNumber: "+79999999999",
 				Email:       "test@email.com",
-				Password:    "hashed_password",
 				Role:        1,
+				Password:    "hashed_password",
 			},
 		},
 		CheckOutput: func(t *testing.T, inputData struct{ worker *models.Worker }, createdWorker *models.Worker, err error) {

@@ -36,6 +36,10 @@ func copyTaskResultToModel(taskDB *TaskDB) *models.Task {
 }
 
 func (t TaskRepository) Create(task *models.Task) (*models.Task, error) {
+	if task.Name == "" || task.PricePerSingle == 0 {
+		return nil, repository_errors.InsertError
+	}
+
 	query := `INSERT INTO tasks(name, price_per_single, category) VALUES ($1, $2, $3) RETURNING id;`
 
 	var taskID uuid.UUID
@@ -74,6 +78,10 @@ func (t TaskRepository) Delete(id uuid.UUID) error {
 }
 
 func (t TaskRepository) Update(task *models.Task) (*models.Task, error) {
+	if task.Name == "" || task.PricePerSingle == 0 {
+		return nil, repository_errors.InsertError
+	}
+
 	query := `UPDATE tasks SET name = $1, price_per_single = $2, category = $3 WHERE tasks.id = $4 RETURNING id, name, price_per_single, category;`
 
 	var updatedTask models.Task

@@ -42,6 +42,10 @@ func copyUserResultToModel(userDB *UserDB) *models.User {
 }
 
 func (u UserRepository) Create(user *models.User) (*models.User, error) {
+	if user.Name == "" || user.Surname == "" || user.Email == "" || user.Password == "" {
+		return nil, repository_errors.InsertError
+	}
+
 	query := `INSERT INTO users(name, surname, address, phone_number, email, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;`
 
 	var userID uuid.UUID
@@ -89,20 +93,6 @@ func (u UserRepository) Delete(id uuid.UUID) error {
 		return repository_errors.DeleteError
 	}
 
-	//// Check if the order was actually deleted
-	//rowsAffected, err := result.RowsAffected()
-	//if err != nil {
-	//	err := tx.Rollback()
-	//	if err != nil {
-	//		return repository_errors.TransactionRollbackError
-	//	}
-	//	return repository_errors.DeleteError
-	//}
-	//
-	//if rowsAffected == 0 {
-	//	return errors.New("no order found to delete")
-	//}
-
 	// Commit the transaction
 	err = tx.Commit()
 	if err != nil {
@@ -113,6 +103,10 @@ func (u UserRepository) Delete(id uuid.UUID) error {
 }
 
 func (u UserRepository) Update(user *models.User) (*models.User, error) {
+	if user.Name == "" || user.Surname == "" || user.Email == "" || user.Password == "" {
+		return nil, repository_errors.UpdateError
+	}
+
 	query := `UPDATE users SET name = $1, surname = $2, email = $3, phone_number = $4, address = $5, password = $6 WHERE users.id = $7 RETURNING id, name, surname, address, phone_number, email, password;`
 
 	var updatedUser models.User

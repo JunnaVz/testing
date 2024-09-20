@@ -44,6 +44,10 @@ func copyWorkerResultToModel(workerDB *WorkerDB) *models.Worker {
 }
 
 func (w WorkerRepository) Create(worker *models.Worker) (*models.Worker, error) {
+	if worker.Name == "" || worker.Surname == "" || worker.Email == "" || worker.Password == "" {
+		return nil, repository_errors.UpdateError
+	}
+
 	query := `INSERT INTO workers(name, surname, address, phone_number, email, role, password) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;`
 
 	var workerID uuid.UUID
@@ -66,6 +70,10 @@ func (w WorkerRepository) Create(worker *models.Worker) (*models.Worker, error) 
 }
 
 func (w WorkerRepository) Update(worker *models.Worker) (*models.Worker, error) {
+	if worker.Name == "" || worker.Surname == "" || worker.Email == "" || worker.Password == "" {
+		return nil, repository_errors.UpdateError
+	}
+
 	query := `UPDATE workers SET name = $1, surname = $2, address = $3, phone_number = $4, email = $5, role = $6, password = $7 WHERE workers.id = $8 RETURNING id, name, surname, address, phone_number, email, role, password;`
 
 	var updatedWorker models.Worker

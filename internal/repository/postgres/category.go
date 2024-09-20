@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"lab3/internal/models"
+	"lab3/internal/repository/repository_errors"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -51,6 +52,10 @@ func (c CategoryRepository) GetByID(id int) (*models.Category, error) {
 }
 
 func (c CategoryRepository) Create(category *models.Category) (*models.Category, error) {
+	if category.Name == "" {
+		return nil, repository_errors.InsertError
+	}
+
 	query := `INSERT INTO categories(name) VALUES ($1) RETURNING id;`
 
 	var categoryID int
@@ -67,6 +72,10 @@ func (c CategoryRepository) Create(category *models.Category) (*models.Category,
 }
 
 func (c CategoryRepository) Update(category *models.Category) (*models.Category, error) {
+	if category.Name == "" {
+		return nil, repository_errors.InsertError
+	}
+
 	query := `UPDATE categories SET name = $2 WHERE id = $1 RETURNING id;`
 
 	var categoryID int

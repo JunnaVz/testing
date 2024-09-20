@@ -193,16 +193,16 @@ VALUES
 
 --3. read files with data
 COPY public.workers (ID, NAME, SURNAME, EMAIL, PHONE_NUMBER, ADDRESS, PASSWORD, ROLE)
-    FROM 'D:\JOVANA\UNI\sem6\PPO\backend-space\db\sql\workers_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM 'D:\JOVANA\UNI\sem7\TEST\lab1\testing\db\sql\workers_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 COPY public.users (ID, NAME, SURNAME, EMAIL, PHONE_NUMBER, ADDRESS, PASSWORD)
-    FROM 'D:\JOVANA\UNI\sem6\PPO\backend-space\db\sql\users_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM 'D:\JOVANA\UNI\sem7\TEST\lab1\testing\db\sql\users_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 COPY public.orders (ID, WORKER_ID, USER_ID, STATUS, DEADLINE, ADDRESS, CREATION_DATE, RATE)
-    FROM 'D:\JOVANA\UNI\sem6\PPO\backend-space\db\sql\orders_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM 'D:\JOVANA\UNI\sem7\TEST\lab1\testing\db\sql\orders_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 COPY public.order_contains_tasks (ID, ORDER_ID, TASK_ID, QUANTITY)
-    FROM 'D:\JOVANA\UNI\sem6\PPO\backend-space\db\sql\order_contains_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM 'D:\JOVANA\UNI\sem7\TEST\lab1\testing\db\sql\order_contains_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 --4. delete
 DELETE FROM workers WHERE role = 1;
