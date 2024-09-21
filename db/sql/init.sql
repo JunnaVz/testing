@@ -42,7 +42,7 @@ create table orders
 );
 
 
--- drop table if exists tasks cascade;
+drop table if exists tasks cascade;
 create table tasks
 (
     id               uuid primary key default uuid_generate_v4(),
@@ -59,6 +59,23 @@ create table order_contains_tasks
     task_id  uuid references tasks (id),
     quantity int2             default 1
 );
+
+drop table if exists categories cascade;
+CREATE TABLE IF NOT EXISTS categories (
+                                          id SERIAL,
+                                          name VARCHAR
+);
+
+INSERT INTO categories (id, name)
+VALUES
+(1, 'Мытье окон'),
+(2, 'Мытье окон'),
+(3, 'Мытье окон'),
+(4, 'Мытье окон'),
+(5, 'Мытье окон'),
+(6, 'Мытье окон'),
+(7, 'Мытье окон'),
+(8, 'Мытье окон');
 
 --2. insert into
 INSERT INTO tasks (id, name, price_per_single, category)
@@ -193,16 +210,16 @@ VALUES
 
 --3. read files with data
 COPY public.workers (ID, NAME, SURNAME, EMAIL, PHONE_NUMBER, ADDRESS, PASSWORD, ROLE)
-    FROM 'D:\JOVANA\UNI\sem7\TEST\lab1\testing\db\sql\workers_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM '/tmp/workers_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 COPY public.users (ID, NAME, SURNAME, EMAIL, PHONE_NUMBER, ADDRESS, PASSWORD)
-    FROM 'D:\JOVANA\UNI\sem7\TEST\lab1\testing\db\sql\users_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM '/tmp/users_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 COPY public.orders (ID, WORKER_ID, USER_ID, STATUS, DEADLINE, ADDRESS, CREATION_DATE, RATE)
-    FROM 'D:\JOVANA\UNI\sem7\TEST\lab1\testing\db\sql\orders_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM '/tmp/orders_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 COPY public.order_contains_tasks (ID, ORDER_ID, TASK_ID, QUANTITY)
-    FROM 'D:\JOVANA\UNI\sem7\TEST\lab1\testing\db\sql\order_contains_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM '/tmp/order_contains_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 --4. delete
 DELETE FROM workers WHERE role = 1;
