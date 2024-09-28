@@ -1,4 +1,4 @@
-package no_mock
+package itc_repository
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 	"testing"
 )
 
-func TestWorkerRepositoryCreate_Success(t *testing.T) {
+func TestUserRepositoryCreate_Success(t *testing.T) {
 	dbContainer, db := SetupTestDatabase()
 	defer func(dbContainer testcontainers.Container, ctx context.Context) {
 		err := dbContainer.Terminate(ctx)
@@ -21,31 +21,28 @@ func TestWorkerRepositoryCreate_Success(t *testing.T) {
 		}
 	}(dbContainer, context.Background())
 
-	workerRepository := postgres.NewWorkerRepository(db)
+	userRepository := postgres.NewUserRepository(db)
 
-	worker := &models.Worker{
-		ID:          uuid.New(),
+	user := &models.User{
 		Name:        "First Name",
 		Surname:     "Last Name",
 		Address:     "Address",
 		PhoneNumber: "+79999999999",
 		Email:       "test@email.com",
-		Role:        1,
 		Password:    "hashed_password",
 	}
-	createdWorker, err := workerRepository.Create(worker)
+	createdUser, err := userRepository.Create(user)
 
 	require.NoError(t, err)
-	require.Equal(t, worker.Name, createdWorker.Name)
-	require.Equal(t, worker.Surname, createdWorker.Surname)
-	require.Equal(t, worker.Address, createdWorker.Address)
-	require.Equal(t, worker.PhoneNumber, createdWorker.PhoneNumber)
-	require.Equal(t, worker.Email, createdWorker.Email)
-	require.Equal(t, worker.Role, createdWorker.Role)
-	require.Equal(t, worker.Password, createdWorker.Password)
+	require.Equal(t, user.Name, createdUser.Name)
+	require.Equal(t, user.Surname, createdUser.Surname)
+	require.Equal(t, user.Address, createdUser.Address)
+	require.Equal(t, user.PhoneNumber, createdUser.PhoneNumber)
+	require.Equal(t, user.Email, createdUser.Email)
+	require.Equal(t, user.Password, createdUser.Password)
 }
 
-func TestWorkerRepositoryCreate_Failure(t *testing.T) {
+func TestUserRepositoryCreate_Failure(t *testing.T) {
 	dbContainer, db := SetupTestDatabase()
 	defer func(dbContainer testcontainers.Container, ctx context.Context) {
 		err := dbContainer.Terminate(ctx)
@@ -54,24 +51,23 @@ func TestWorkerRepositoryCreate_Failure(t *testing.T) {
 		}
 	}(dbContainer, context.Background())
 
-	workerRepository := postgres.NewWorkerRepository(db)
+	userRepository := postgres.NewUserRepository(db)
 
-	worker := &models.Worker{
+	user := &models.User{
 		Name:        "",
 		Surname:     "Last Name",
 		Address:     "Address",
 		PhoneNumber: "+79999999999",
 		Email:       "test@email.com",
-		Role:        1,
-		Password:    "hashed_password",
+		Password:    "hash",
 	}
-	createdWorker, err := workerRepository.Create(worker)
+	createdUser, err := userRepository.Create(user)
 
 	require.Error(t, err)
-	require.Nil(t, createdWorker)
+	require.Nil(t, createdUser)
 }
 
-func TestWorkerRepositoryGetWorkerByID_Success(t *testing.T) {
+func TestUserRepositoryGetUserByID_Success(t *testing.T) {
 	dbContainer, db := SetupTestDatabase()
 	defer func(dbContainer testcontainers.Container, ctx context.Context) {
 		err := dbContainer.Terminate(ctx)
@@ -80,32 +76,30 @@ func TestWorkerRepositoryGetWorkerByID_Success(t *testing.T) {
 		}
 	}(dbContainer, context.Background())
 
-	workerRepository := postgres.NewWorkerRepository(db)
+	userRepository := postgres.NewUserRepository(db)
 
-	worker := &models.Worker{
+	user := &models.User{
 		Name:        "First Name",
 		Surname:     "Last Name",
 		Address:     "Address",
 		PhoneNumber: "+79999999999",
 		Email:       "test@email.com",
-		Role:        1,
 		Password:    "hashed_password",
 	}
-	createdWorker, err := workerRepository.Create(worker)
+	createdUser, err := userRepository.Create(user)
 	require.NoError(t, err)
 
-	receivedWorker, err := workerRepository.GetWorkerByID(createdWorker.ID)
+	receivedUser, err := userRepository.GetUserByID(createdUser.ID)
 	require.NoError(t, err)
-	require.Equal(t, createdWorker.Name, receivedWorker.Name)
-	require.Equal(t, createdWorker.Surname, receivedWorker.Surname)
-	require.Equal(t, createdWorker.Address, receivedWorker.Address)
-	require.Equal(t, createdWorker.PhoneNumber, receivedWorker.PhoneNumber)
-	require.Equal(t, createdWorker.Email, receivedWorker.Email)
-	require.Equal(t, createdWorker.Role, receivedWorker.Role)
-	require.Equal(t, createdWorker.Password, receivedWorker.Password)
+	require.Equal(t, createdUser.Name, receivedUser.Name)
+	require.Equal(t, createdUser.Surname, receivedUser.Surname)
+	require.Equal(t, createdUser.Address, receivedUser.Address)
+	require.Equal(t, createdUser.PhoneNumber, receivedUser.PhoneNumber)
+	require.Equal(t, createdUser.Email, receivedUser.Email)
+	require.Equal(t, createdUser.Password, receivedUser.Password)
 }
 
-func TestWorkerRepositoryGetWorkerByID_Failure(t *testing.T) {
+func TestUserRepositoryGetUserByID_Failure(t *testing.T) {
 	dbContainer, db := SetupTestDatabase()
 	defer func(dbContainer testcontainers.Container, ctx context.Context) {
 		err := dbContainer.Terminate(ctx)
@@ -114,14 +108,14 @@ func TestWorkerRepositoryGetWorkerByID_Failure(t *testing.T) {
 		}
 	}(dbContainer, context.Background())
 
-	workerRepository := postgres.NewWorkerRepository(db)
+	userRepository := postgres.NewUserRepository(db)
 
-	receivedWorker, err := workerRepository.GetWorkerByID(uuid.New())
+	receivedUser, err := userRepository.GetUserByID(uuid.New())
 	require.Error(t, err)
-	require.Nil(t, receivedWorker)
+	require.Nil(t, receivedUser)
 }
 
-func TestWorkerRepositoryUpdate_Success(t *testing.T) {
+func TestUserRepositoryUpdate_Success(t *testing.T) {
 	dbContainer, db := SetupTestDatabase()
 	defer func(dbContainer testcontainers.Container, ctx context.Context) {
 		err := dbContainer.Terminate(ctx)
@@ -130,27 +124,26 @@ func TestWorkerRepositoryUpdate_Success(t *testing.T) {
 		}
 	}(dbContainer, context.Background())
 
-	workerRepository := postgres.NewWorkerRepository(db)
+	userRepository := postgres.NewUserRepository(db)
 
-	worker := &models.Worker{
+	user := &models.User{
 		Name:        "First Name",
 		Surname:     "Last Name",
 		Address:     "Address",
 		PhoneNumber: "+79999999999",
 		Email:       "test@email.com",
-		Role:        1,
 		Password:    "hashed_password",
 	}
-	createdWorker, err := workerRepository.Create(worker)
+	createdUser, err := userRepository.Create(user)
 	require.NoError(t, err)
 
-	createdWorker.Name = "Updated Name"
-	updatedWorker, err := workerRepository.Update(createdWorker)
+	createdUser.Name = "Updated Name"
+	updatedUser, err := userRepository.Update(createdUser)
 	require.NoError(t, err)
-	require.Equal(t, "Updated Name", updatedWorker.Name)
+	require.Equal(t, "Updated Name", updatedUser.Name)
 }
 
-func TestWorkerRepositoryUpdate_Failure(t *testing.T) {
+func TestUserRepositoryUpdate_Failure(t *testing.T) {
 	dbContainer, db := SetupTestDatabase()
 	defer func(dbContainer testcontainers.Container, ctx context.Context) {
 		err := dbContainer.Terminate(ctx)
@@ -159,27 +152,26 @@ func TestWorkerRepositoryUpdate_Failure(t *testing.T) {
 		}
 	}(dbContainer, context.Background())
 
-	workerRepository := postgres.NewWorkerRepository(db)
+	userRepository := postgres.NewUserRepository(db)
 
-	worker := &models.Worker{
+	user := &models.User{
 		Name:        "First Name",
 		Surname:     "Last Name",
 		Address:     "Address",
 		PhoneNumber: "+79999999999",
 		Email:       "test@email.com",
-		Role:        1,
 		Password:    "hashed_password",
 	}
-	createdWorker, err := workerRepository.Create(worker)
+	createdUser, err := userRepository.Create(user)
 	require.NoError(t, err)
 
-	createdWorker.Name = ""
-	updatedWorker, err := workerRepository.Update(createdWorker)
+	createdUser.Name = ""
+	updatedUser, err := userRepository.Update(createdUser)
 	require.Error(t, err)
-	require.Nil(t, updatedWorker)
+	require.Nil(t, updatedUser)
 }
 
-func TestWorkerRepositoryDelete_Success(t *testing.T) {
+func TestUserRepositoryDelete_Success(t *testing.T) {
 	dbContainer, db := SetupTestDatabase()
 	defer func(dbContainer testcontainers.Container, ctx context.Context) {
 		err := dbContainer.Terminate(ctx)
@@ -188,29 +180,28 @@ func TestWorkerRepositoryDelete_Success(t *testing.T) {
 		}
 	}(dbContainer, context.Background())
 
-	workerRepository := postgres.NewWorkerRepository(db)
+	userRepository := postgres.NewUserRepository(db)
 
-	worker := &models.Worker{
+	user := &models.User{
 		Name:        "First Name",
 		Surname:     "Last Name",
 		Address:     "Address",
 		PhoneNumber: "+79999999999",
 		Email:       "test@email.com",
-		Role:        1,
 		Password:    "hashed_password",
 	}
-	createdWorker, err := workerRepository.Create(worker)
+	createdUser, err := userRepository.Create(user)
 	require.NoError(t, err)
 
-	err = workerRepository.Delete(createdWorker.ID)
+	err = userRepository.Delete(createdUser.ID)
 	require.NoError(t, err)
 
-	receivedWorker, err := workerRepository.GetWorkerByID(createdWorker.ID)
+	receivedUser, err := userRepository.GetUserByID(createdUser.ID)
 	require.Error(t, err)
-	require.Nil(t, receivedWorker)
+	require.Nil(t, receivedUser)
 }
 
-func TestWorkerRepositoryDelete_Failure(t *testing.T) {
+func TestUserRepositoryDelete_Failure(t *testing.T) {
 	dbContainer, db := SetupTestDatabase()
 	defer func(dbContainer testcontainers.Container, ctx context.Context) {
 		err := dbContainer.Terminate(ctx)
@@ -219,8 +210,8 @@ func TestWorkerRepositoryDelete_Failure(t *testing.T) {
 		}
 	}(dbContainer, context.Background())
 
-	workerRepository := postgres.NewWorkerRepository(db)
+	userRepository := postgres.NewUserRepository(db)
 
-	_ = workerRepository.Delete(uuid.New())
+	_ = userRepository.Delete(uuid.New())
 	require.Nil(t, nil)
 }

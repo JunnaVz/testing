@@ -1,5 +1,5 @@
 // tests/unit_services/no_mock/worker_test.go
-package no_mock
+package itc_services
 
 import (
 	"context"

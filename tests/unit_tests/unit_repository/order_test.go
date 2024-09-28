@@ -370,7 +370,7 @@
 //	mockRepo.AssertExpectations(t)
 //}
 
-package mock
+package unit_repository
 
 import (
 	"errors"
