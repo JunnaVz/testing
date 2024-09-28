@@ -1,6 +1,6 @@
 module lab3
 
-go 1.21
+go 1.19
 
 require (
 	github.com/charmbracelet/log v0.4.0
