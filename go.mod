@@ -2,8 +2,6 @@ module lab3
 
 go 1.21
 
-toolchain go1.23.1
-
 require (
 	github.com/charmbracelet/log v0.4.0
 	github.com/gin-gonic/contrib v0.0.0-20240508051311-c1c6bf0061b0
