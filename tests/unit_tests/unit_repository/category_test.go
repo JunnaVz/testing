@@ -1,185 +1,80 @@
-//package mock
-//
-//import (
-//	"errors"
-//	"github.com/stretchr/testify/assert"
-//	"github.com/stretchr/testify/mock"
-//	"lab3/internal/models"
-//	"testing"
-//)
-//
-//// Mock repository
-//type MockCategoryRepository struct {
-//	mock.Mock
-//}
-//
-//func (m *MockCategoryRepository) GetAll() ([]models.Category, error) {
-//	args := m.Called()
-//	if args.Get(0) == nil {
-//		return nil, args.Error(1)
-//	}
-//	return args.Get(0).([]models.Category), args.Error(1)
-//}
-//
-//func (m *MockCategoryRepository) GetByID(id int) (*models.Category, error) {
-//	args := m.Called(id)
-//	if args.Get(0) == nil {
-//		return nil, args.Error(1)
-//	}
-//	return args.Get(0).(*models.Category), args.Error(1)
-//}
-//
-//func (m *MockCategoryRepository) Create(category *models.Category) (*models.Category, error) {
-//	args := m.Called(category)
-//	if args.Get(0) == nil {
-//		return nil, args.Error(1)
-//	}
-//	return args.Get(0).(*models.Category), args.Error(1)
-//}
-//
-//func (m *MockCategoryRepository) Update(category *models.Category) (*models.Category, error) {
-//	args := m.Called(category)
-//	if args.Get(0) == nil {
-//		return nil, args.Error(1)
-//	}
-//	return args.Get(0).(*models.Category), args.Error(1)
-//}
-//
-//func (m *MockCategoryRepository) Delete(id int) error {
-//	args := m.Called(id)
-//	return args.Error(0)
-//}
-//
-//var mockRepo *MockCategoryRepository
-//
-//func TestMain(m *testing.M) {
-//	mockRepo = new(MockCategoryRepository)
-//	m.Run()
-//}
-//
-//func TestCreateCategory_Success(t *testing.T) {
-//	category := &models.Category{Name: "CategoryName"}
-//	mockRepo.On("Create", category).Return(category, nil)
-//
-//	createdCategory, err := mockRepo.Create(category)
-//
-//	assert.Nil(t, err)
-//	assert.Equal(t, category, createdCategory)
-//	mockRepo.AssertExpectations(t)
-//}
-//
-//func TestCreateCategory_Failure(t *testing.T) {
-//	category := &models.Category{Name: "CategoryName"}
-//	mockRepo.On("Create", category).Return((*models.Category)(nil), errors.New("creation failed"))
-//
-//	createdCategory, err := mockRepo.Create(category)
-//
-//	assert.Error(t, err)
-//	assert.Nil(t, createdCategory)
-//	mockRepo.AssertExpectations(t)
-//}
-//
-//func TestUpdateCategory_Success(t *testing.T) {
-//	category := &models.Category{Name: "CategoryName"}
-//	mockRepo.On("Update", category).Return(category, nil)
-//
-//	updatedCategory, err := mockRepo.Update(category)
-//
-//	assert.NoError(t, err)
-//	assert.Equal(t, category, updatedCategory)
-//	mockRepo.AssertExpectations(t)
-//}
-//
-//func TestUpdateCategory_Failure(t *testing.T) {
-//	category := &models.Category{Name: "CategoryName"}
-//	mockRepo.On("Update", category).Return((*models.Category)(nil), errors.New("update failed"))
-//
-//	updatedCategory, err := mockRepo.Update(category)
-//
-//	assert.Error(t, err)
-//	assert.Nil(t, updatedCategory)
-//	mockRepo.AssertExpectations(t)
-//}
-//
-//func TestDeleteCategory_Success(t *testing.T) {
-//	categoryID := 1
-//	mockRepo.On("Delete", categoryID).Return(nil)
-//
-//	err := mockRepo.Delete(categoryID)
-//
-//	assert.NoError(t, err)
-//	mockRepo.AssertExpectations(t)
-//}
-//
-//func TestDeleteCategory_Failure(t *testing.T) {
-//	categoryID := 1
-//	mockRepo.On("Delete", categoryID).Return(errors.New("deletion failed"))
-//
-//	err := mockRepo.Delete(categoryID)
-//
-//	assert.Error(t, err)
-//	mockRepo.AssertExpectations(t)
-//}
-//
-//func TestGetCategoryByID_Success(t *testing.T) {
-//	category := &models.Category{Name: "CategoryName"}
-//	categoryID := 1
-//	mockRepo.On("GetByID", categoryID).Return(category, nil)
-//
-//	receivedCategory, err := mockRepo.GetByID(categoryID)
-//
-//	assert.NoError(t, err)
-//	assert.Equal(t, category, receivedCategory)
-//	mockRepo.AssertExpectations(t)
-//}
-//
-//func TestGetCategoryByID_Failure(t *testing.T) {
-//	categoryID := 1
-//	mockRepo.On("GetByID", categoryID).Return((*models.Category)(nil), errors.New("category not found"))
-//
-//	receivedCategory, err := mockRepo.GetByID(categoryID)
-//
-//	assert.Error(t, err)
-//	assert.Nil(t, receivedCategory)
-//	mockRepo.AssertExpectations(t)
-//}
-//
-//func TestGetAllCategories_Success(t *testing.T) {
-//	categories := []models.Category{
-//		{Name: "CategoryName1"},
-//		{Name: "CategoryName2"},
-//	}
-//	mockRepo.On("GetAll").Return(categories, nil)
-//
-//	receivedCategories, err := mockRepo.GetAll()
-//
-//	assert.NoError(t, err)
-//	assert.Equal(t, categories, receivedCategories)
-//	mockRepo.AssertExpectations(t)
-//}
-//
-//func TestGetAllCategories_Failure(t *testing.T) {
-//	mockRepo.On("GetAll").Return(([]models.Category)(nil), errors.New("categories not found"))
-//
-//	receivedCategories, err := mockRepo.GetAll()
-//
-//	assert.Error(t, err)
-//	assert.Nil(t, receivedCategories)
-//	mockRepo.AssertExpectations(t)
-//}
-
 package unit_repository
 
 import (
 	"errors"
-	"github.com/stretchr/testify/assert"
-	"lab3/internal/models"
-	"lab3/tests/unit_tests/unit_repository/testdata"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"lab3/internal/models"
 )
 
-// Mock repository
+// CategoryBuilder реализует паттерн Data Builder для Category
+type CategoryBuilder struct {
+	category models.Category
+}
+
+// NewCategoryBuilder создает новый экземпляр CategoryBuilder с настройками по умолчанию
+func NewCategoryBuilder() *CategoryBuilder {
+	return &CategoryBuilder{
+		category: models.Category{
+			ID:   1,
+			Name: "DefaultCategory",
+		},
+	}
+}
+
+// WithID устанавливает ID категории
+func (b *CategoryBuilder) WithID(id int) *CategoryBuilder {
+	b.category.ID = id
+	return b
+}
+
+// WithName устанавливает имя категории
+func (b *CategoryBuilder) WithName(name string) *CategoryBuilder {
+	b.category.Name = name
+	return b
+}
+
+// Build возвращает готовый объект Category
+func (b *CategoryBuilder) Build() *models.Category {
+	return &b.category
+}
+
+// CategoryMother реализует паттерн Object Mother для Category
+var CategoryMother = struct {
+	Default        func() *models.Category
+	WithID         func(id int) *models.Category
+	WithName       func(name string) *models.Category
+	CustomCategory func(id int, name string) *models.Category
+}{
+	Default: func() *models.Category {
+		return &models.Category{
+			ID:   1,
+			Name: "DefaultCategory",
+		}
+	},
+	WithID: func(id int) *models.Category {
+		return &models.Category{
+			ID:   id,
+			Name: "CategoryWithSpecificID",
+		}
+	},
+	WithName: func(name string) *models.Category {
+		return &models.Category{
+			ID:   2,
+			Name: name,
+		}
+	},
+	CustomCategory: func(id int, name string) *models.Category {
+		return &models.Category{
+			ID:   id,
+			Name: name,
+		}
+	},
+}
+
+// MockCategoryRepository представляет мок-репозиторий для Category
 type MockCategoryRepository struct {
 	GetAllFunc  func() ([]models.Category, error)
 	GetByIDFunc func(int) (*models.Category, error)
@@ -208,7 +103,7 @@ func (m *MockCategoryRepository) Delete(id int) error {
 	return m.DeleteFunc(id)
 }
 
-// Глобальные переменные для использования в тестах
+// Глобальная переменная для мок-репозитория (может быть полезна для глобальных настроек)
 var mockRepo *MockCategoryRepository
 
 // TestMain используется для глобальной фикстуры, которая запускается один раз для всех тестов
@@ -219,9 +114,9 @@ func TestMain(m *testing.M) {
 	os.Exit(code)   // Завершение программы
 }
 
-// setupSuite для настройки перед в��еми тестами
+// setupSuite для настройки перед всеми тестами
 func setupSuite() {
-	mockRepo = &MockCategoryRepository{} // Инициализация общего мока
+	mockRepo = &MockCategoryRepository{} // Инициализация общего мока, если необходимо
 }
 
 // teardownSuite для очистки после всех тестов
@@ -229,23 +124,27 @@ func teardownSuite() {
 	mockRepo = nil // Очистка
 }
 
-// setup для каждого теста (инициализация)
+// setupTest и teardownTest для каждого теста
 func setupTest(t *testing.T) *MockCategoryRepository {
-	repo := &MockCategoryRepository{} // Каждый тест получает свою копию мок-репозитория
+	repo := &MockCategoryRepository{}
 	t.Cleanup(func() {
-		teardownTest() // Удаление после теста
+		teardownTest()
 	})
 	return repo
 }
 
-// Teardown для каждого теста (очистка)
 func teardownTest() {
-	// Можно добавлять дополнительные действия по очистке
+	// Дополнительная очистка, если требуется
 }
 
+// Пример теста с использованием Data Builder
 func TestCreateCategory_Success(t *testing.T) {
 	mockRepo := setupTest(t)
-	category := testdata.NewCategoryBuilder().WithName("CategoryName").Build()
+
+	// Используем Data Builder для создания категории
+	category := NewCategoryBuilder().
+		WithName("CategoryName").
+		Build()
 
 	mockRepo.CreateFunc = func(c *models.Category) (*models.Category, error) {
 		return c, nil
@@ -257,9 +156,11 @@ func TestCreateCategory_Success(t *testing.T) {
 	assert.Equal(t, category, createdCategory)
 }
 
+// Пример теста с использованием Object Mother
 func TestCreateCategory_Failure(t *testing.T) {
 	mockRepo := setupTest(t)
-	category := testdata.CategoryMother{}.CustomCategory("CategoryName")
+	// Исправляем вызов CustomCategory, передавая оба параметра: id и name
+	category := CategoryMother.CustomCategory(0, "CategoryName")
 
 	mockRepo.CreateFunc = func(c *models.Category) (*models.Category, error) {
 		return nil, errors.New("creation failed")
@@ -273,7 +174,7 @@ func TestCreateCategory_Failure(t *testing.T) {
 
 func TestUpdateCategory_Success(t *testing.T) {
 	mockRepo := setupTest(t)
-	category := testdata.NewCategoryBuilder().WithName("CategoryName").Build()
+	category := NewCategoryBuilder().WithName("CategoryName").Build()
 
 	mockRepo.UpdateFunc = func(c *models.Category) (*models.Category, error) {
 		return c, nil
@@ -287,7 +188,8 @@ func TestUpdateCategory_Success(t *testing.T) {
 
 func TestUpdateCategory_Failure(t *testing.T) {
 	mockRepo := setupTest(t)
-	category := testdata.CategoryMother{}.CustomCategory("CategoryName")
+	// Исправляем вызов CustomCategory, передавая оба параметра: id и name
+	category := CategoryMother.CustomCategory(0, "CategoryName")
 
 	mockRepo.UpdateFunc = func(c *models.Category) (*models.Category, error) {
 		return nil, errors.New("update failed")
@@ -327,8 +229,8 @@ func TestDeleteCategory_Failure(t *testing.T) {
 
 func TestGetCategoryByID_Success(t *testing.T) {
 	mockRepo := setupTest(t)
-	category := testdata.NewCategoryBuilder().WithName("CategoryName").Build()
-	categoryID := 1
+	category := NewCategoryBuilder().WithName("CategoryName").Build()
+	categoryID := category.ID
 
 	mockRepo.GetByIDFunc = func(id int) (*models.Category, error) {
 		return category, nil
@@ -357,8 +259,8 @@ func TestGetCategoryByID_Failure(t *testing.T) {
 func TestGetAllCategories_Success(t *testing.T) {
 	mockRepo := setupTest(t)
 	categories := []models.Category{
-		*testdata.NewCategoryBuilder().WithName("CategoryName1").Build(),
-		*testdata.NewCategoryBuilder().WithName("CategoryName2").Build(),
+		*NewCategoryBuilder().WithName("CategoryName1").Build(),
+		*NewCategoryBuilder().WithName("CategoryName2").Build(),
 	}
 
 	mockRepo.GetAllFunc = func() ([]models.Category, error) {
