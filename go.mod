@@ -1,6 +1,8 @@
 module lab3
 
-go 1.19
+go 1.21
+
+toolchain go1.23.1
 
 require (
 	github.com/charmbracelet/log v0.4.0
@@ -11,7 +13,6 @@ require (
 	github.com/jackc/pgx/v4 v4.18.3
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.9
-	github.com/rekby/fixenv v0.7.0
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
 	github.com/testcontainers/testcontainers-go v0.29.1
