@@ -3,10 +3,10 @@ package models
 import "github.com/google/uuid"
 
 type Task struct {
-	ID             uuid.UUID
-	Name           string
-	PricePerSingle float64
-	Category       int
+	ID             uuid.UUID `json:"id"`
+	Name           string    `json:"name"`
+	PricePerSingle float64   `json:"price_per_single"`
+	Category       int       `json:"category"`
 }
 
 var TaskCategories = [8]string{

@@ -97,7 +97,7 @@ func (o OrderService) CreateOrder(userID uuid.UUID, address string, deadline tim
 func (o OrderService) DeleteOrder(id uuid.UUID) error {
 	order, err := o.OrderRepository.GetOrderByID(id)
 	if err != nil {
-		o.logger.Error("SERVICE: GetUserByID method failed", "id", id, "error", err)
+		o.logger.Error("SERVICE: GetOrderByID method failed", "id", id, "error", err)
 		return err
 	}
 

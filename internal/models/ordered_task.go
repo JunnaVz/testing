@@ -1,6 +1,6 @@
 package models
 
 type OrderedTask struct {
-	Task     *Task
-	Quantity int
+	Task     *Task `json:"task"`
+	Quantity int   `json:"quantity"`
 }

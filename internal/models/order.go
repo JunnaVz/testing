@@ -6,14 +6,14 @@ import (
 )
 
 type Order struct {
-	ID           uuid.UUID
-	WorkerID     uuid.UUID
-	UserID       uuid.UUID
-	Status       int
-	Address      string
-	CreationDate time.Time
-	Deadline     time.Time
-	Rate         int
+	ID           uuid.UUID `json:"id"`
+	WorkerID     uuid.UUID `json:"worker_id"`
+	UserID       uuid.UUID `json:"user_id"`
+	Status       int       `json:"status"`
+	Address      string    `json:"address"`
+	CreationDate time.Time `json:"creation_date"`
+	Deadline     time.Time `json:"deadline"`
+	Rate         int       `json:"rate"`
 }
 
 const NoStatus = 0

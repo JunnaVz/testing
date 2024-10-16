@@ -86,10 +86,19 @@ func (w WorkerRepository) Update(worker *models.Worker) (*models.Worker, error) 
 
 func (w WorkerRepository) Delete(id uuid.UUID) error {
 	query := `DELETE FROM workers WHERE id = $1;`
-	_, err := w.db.Exec(query, id)
+	result, err := w.db.Exec(query, id)
 
 	if err != nil {
 		return repository_errors.DeleteError
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("no worker found to delete")
 	}
 
 	return nil

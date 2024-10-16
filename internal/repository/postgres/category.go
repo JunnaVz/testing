@@ -1,6 +1,9 @@
 package postgres
 
 import (
+	"database/sql"
+	"errors"
+
 	"lab3/internal/models"
 	"lab3/internal/repository/repository_errors"
 
@@ -24,7 +27,7 @@ func (c CategoryRepository) GetAll() ([]models.Category, error) {
 	var categories []Category
 	err := c.db.Select(&categories, "SELECT * FROM categories")
 	if err != nil {
-		return nil, err
+		return nil, repository_errors.SelectError
 	}
 
 	var categoryModels []models.Category
@@ -42,8 +45,10 @@ func (c CategoryRepository) GetAll() ([]models.Category, error) {
 func (c CategoryRepository) GetByID(id int) (*models.Category, error) {
 	var category Category
 	err := c.db.Get(&category, "SELECT * FROM categories WHERE id = $1", id)
-	if err != nil {
-		return nil, err
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, repository_errors.DoesNotExist
+	} else if err != nil {
+		return nil, repository_errors.SelectError
 	}
 	return &models.Category{
 		ID:   category.ID,
@@ -92,9 +97,19 @@ func (c CategoryRepository) Update(category *models.Category) (*models.Category,
 }
 
 func (c CategoryRepository) Delete(id int) error {
-	_, err := c.db.Exec("DELETE FROM categories WHERE id = $1", id)
+	result, err := c.db.Exec("DELETE FROM categories WHERE id = $1", id)
+	if err != nil {
+		return repository_errors.DeleteError
+	}
+
+	rowsAffected, err := result.RowsAffected()
 	if err != nil {
 		return err
 	}
+
+	if rowsAffected == 0 {
+		return errors.New("no category found to delete")
+	}
+
 	return nil
 }
