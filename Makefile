@@ -12,6 +12,7 @@ allure:
 	allure serve allure-results -p 4000
 
 report: test allure
+#report: test allure
 
 ci-unit:
 	export ALLURE_OUTPUT_PATH="${GITHUB_WORKSPACE}" && \
