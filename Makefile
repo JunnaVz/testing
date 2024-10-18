@@ -18,13 +18,13 @@ ci-unit:
  	export ALLURE_OUTPUT_FOLDER="unit-allure" && \
  	export DB_INIT_PATH="${GITHUB_WORKSPACE}/db/sql/init.sql" && \
  	go test -tags=unit ${GITHUB_WORKSPACE}/tests/unit_tests/unit_services/ \
-	${GITHUB_WORKSPACE}/tests/unit_tests/unit_repositories/ --race
+	${GITHUB_WORKSPACE}/tests/unit_tests/unit_repository/ --race
 
 local-unit:
 	export ALLURE_OUTPUT_PATH="/home/pikasoft/Documents/jovana/sem7/TEST/testing" && \
  	export DB_INIT_PATH="/home/pikasoft/Documents/jovana/sem7/TEST/testing/db/sql/init.sql" && \
  	go test -tags=unit /home/pikasoft/Documents/jovana/sem7/TEST/testing/tests/unit_tests/unit_services/... \
-	/home/pikasoft/Documents/jovana/sem7/TEST/testing/tests/unit_tests/unit_repositories/... --race
+	/home/pikasoft/Documents/jovana/sem7/TEST/testing/tests/unit_tests/unit_repository/... --race
 
 ci-integration:
 	export ALLURE_OUTPUT_PATH="${GITHUB_WORKSPACE}" && \
