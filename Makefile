@@ -16,7 +16,7 @@ report: test allure
 ci-unit:
 	export ALLURE_OUTPUT_PATH="${GITHUB_WORKSPACE}" && \
  	export ALLURE_OUTPUT_FOLDER="unit-allure" && \
- 	export DB_INIT_PATH="/home/pikasoft/Documents/jovana/sem7/TEST/testing/db/sql/init.sql" && \
+ 	export DB_INIT_PATH="${GITHUB_WORKSPACE}/db/sql/init.sql" && \
  	go test -tags=unit /home/pikasoft/Documents/jovana/sem7/TEST/testing/tests/unit_tests/unit_services/... \
 	/home/pikasoft/Documents/jovana/sem7/TEST/testing/tests/unit_tests/unit_repositories/... --race
 
@@ -29,7 +29,7 @@ local-unit:
 ci-integration:
 	export ALLURE_OUTPUT_PATH="${GITHUB_WORKSPACE}" && \
 	export ALLURE_OUTPUT_FOLDER="integration-allure" && \
- 	export DB_INIT_PATH="/home/pikasoft/Documents/jovana/sem7/TEST/testing/db/sql/init.sql" && \
+ 	export DB_INIT_PATH="${GITHUB_WORKSPACE}/db/sql/init.sql" && \
 	go test -tags=integration /home/pikasoft/Documents/jovana/sem7/TEST/testing/tests/integration/category_test.go --race
 
 local-integration:
