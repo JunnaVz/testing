@@ -17,8 +17,8 @@ ci-unit:
 	export ALLURE_OUTPUT_PATH="${GITHUB_WORKSPACE}" && \
  	export ALLURE_OUTPUT_FOLDER="unit-allure" && \
  	export DB_INIT_PATH="${GITHUB_WORKSPACE}/db/sql/init.sql" && \
- 	go test -tags=unit /home/pikasoft/Documents/jovana/sem7/TEST/testing/tests/unit_tests/unit_services/... \
-	/home/pikasoft/Documents/jovana/sem7/TEST/testing/tests/unit_tests/unit_repositories/... --race
+ 	go test -tags=unit ${GITHUB_WORKSPACE}/tests/unit_tests/unit_services/... \
+	${GITHUB_WORKSPACE}/tests/unit_tests/unit_repositories/... --race
 
 local-unit:
 	export ALLURE_OUTPUT_PATH="/home/pikasoft/Documents/jovana/sem7/TEST/testing" && \
@@ -30,7 +30,7 @@ ci-integration:
 	export ALLURE_OUTPUT_PATH="${GITHUB_WORKSPACE}" && \
 	export ALLURE_OUTPUT_FOLDER="integration-allure" && \
  	export DB_INIT_PATH="${GITHUB_WORKSPACE}/db/sql/init.sql" && \
-	go test -tags=integration /home/pikasoft/Documents/jovana/sem7/TEST/testing/tests/integration/category_test.go --race
+	go test -tags=integration ${GITHUB_WORKSPACE}/tests/integration/category_test.go --race
 
 local-integration:
 	export ALLURE_OUTPUT_PATH="/home/pikasoft/Documents/jovana/sem7/TEST/testing" && \
@@ -41,7 +41,7 @@ ci-e2e:
 	docker compose up -d
 	export ALLURE_OUTPUT_PATH="${GITHUB_WORKSPACE}" && \
 	export ALLURE_OUTPUT_FOLDER="e2e-allure" && \
-	go test -tags=e2e /home/pikasoft/Documents/jovana/sem7/TEST/testing/tests/integration/e2e_test.go --race
+	go test -tags=e2e ${GITHUB_WORKSPACE}/tests/integration/e2e_test.go --race
 	docker compose down
 	docker image rm testing-backend:latest bitnami/postgresql:16 alpine:latest
 
