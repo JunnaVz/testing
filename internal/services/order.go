@@ -9,6 +9,7 @@ import (
 	"lab3/internal/repository/repository_errors"
 	"lab3/internal/repository/repository_interfaces"
 	"lab3/internal/services/service_interfaces"
+	"lab3/internal/validators"
 	"time"
 )
 
@@ -56,7 +57,7 @@ func (o OrderService) checkTasksExistence(tasks []models.OrderedTask) (bool, err
 
 func (o OrderService) CreateOrder(userID uuid.UUID, address string, deadline time.Time, orderedTasks []models.OrderedTask) (*models.Order, error) {
 	// checking if order is valid
-	if !validAddress(address) || !validDeadline(deadline) || !validTasksNumber(orderedTasks) {
+	if !validators.ValidAddress(address) || !validators.ValidDeadline(deadline) || !validators.ValidTasksNumber(orderedTasks) {
 		o.logger.Error("SERVICE: Invalid input")
 		return nil, fmt.Errorf("SERVICE: Invalid input")
 	}
@@ -213,7 +214,7 @@ func (o OrderService) Update(orderID uuid.UUID, status int, rate int, workerID u
 	//	return nil, fmt.Errorf("SERVICE: Order is already completed or cancelled")
 	//}
 
-	if !validStatus(status) {
+	if !validators.ValidStatus(status) {
 		o.logger.Error("SERVICE: Invalid status", "status", status)
 		return nil, fmt.Errorf("SERVICE: Invalid status")
 	} else {
@@ -226,7 +227,7 @@ func (o OrderService) Update(orderID uuid.UUID, status int, rate int, workerID u
 		return nil, fmt.Errorf("SERVICE: Order is not completed")
 	}
 
-	if !validRate(rate) {
+	if !validators.ValidRate(rate) {
 		o.logger.Error("SERVICE: Rating is out of range", "rate", rate)
 		return nil, fmt.Errorf("SERVICE: Rating is out of range")
 	} else {
@@ -258,7 +259,7 @@ func (o OrderService) AddTask(orderID uuid.UUID, taskID uuid.UUID) error {
 		return err
 	}
 
-	if taskIsAttachedToOrder(taskID, attachedTasks) {
+	if validators.TaskIsAttachedToOrder(taskID, attachedTasks) {
 		o.logger.Error("SERVICE: Task is already attached to order", "order_id", orderID, "task_id", taskID)
 		return fmt.Errorf("SERVICE: Task is already attached to order")
 	}
@@ -292,7 +293,7 @@ func (o OrderService) RemoveTask(orderID uuid.UUID, taskID uuid.UUID) error {
 		return err
 	}
 
-	if !taskIsAttachedToOrder(taskID, attachedTasks) {
+	if !validators.TaskIsAttachedToOrder(taskID, attachedTasks) {
 		o.logger.Error("SERVICE: Task is not attached to order", "order_id", orderID, "task_id", taskID)
 		return fmt.Errorf("SERVICE: Task is not attached to order")
 	}

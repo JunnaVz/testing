@@ -9,6 +9,7 @@ import (
 	"lab3/internal/repository/repository_errors"
 	"lab3/internal/repository/repository_interfaces"
 	"lab3/internal/services/service_interfaces"
+	"lab3/internal/validators"
 	"lab3/password_hash"
 )
 
@@ -68,32 +69,32 @@ func (u UserService) checkIfUserWithEmailExists(email string) (*models.User, err
 
 func (u UserService) Register(user *models.User, password string) (*models.User, error) {
 	u.logger.Infof("SERVICE: validate user with email %s", user.Email)
-	if !validName(user.Name) {
+	if !validators.ValidName(user.Name) {
 		u.logger.Error("SERVICE: Invalid name")
 		return nil, fmt.Errorf("SERVICE: Invalid name")
 	}
 
-	if !validName(user.Surname) {
+	if !validators.ValidName(user.Surname) {
 		u.logger.Error("SERVICE: Invalid surname")
 		return nil, fmt.Errorf("SERVICE: Invalid surname")
 	}
 
-	if !validEmail(user.Email) {
+	if !validators.ValidEmail(user.Email) {
 		u.logger.Error("SERVICE: Invalid email")
 		return nil, fmt.Errorf("SERVICE: Invalid email")
 	}
 
-	if !validAddress(user.Address) {
+	if !validators.ValidAddress(user.Address) {
 		u.logger.Error("SERVICE: Invalid address")
 		return nil, fmt.Errorf("SERVICE: Invalid address")
 	}
 
-	if !validPhoneNumber(user.PhoneNumber) {
+	if !validators.ValidPhoneNumber(user.PhoneNumber) {
 		u.logger.Error("SERVICE: Invalid phone number")
 		return nil, fmt.Errorf("SERVICE: Invalid phone number")
 	}
 
-	if !validPassword(password) {
+	if !validators.ValidPassword(password) {
 		u.logger.Error("SERVICE: Invalid password")
 		return nil, fmt.Errorf("SERVICE: Invalid password")
 	}
@@ -157,7 +158,7 @@ func (u UserService) Update(id uuid.UUID, name string, surname string, email str
 		return nil, err
 	}
 
-	if !validName(name) || !validName(surname) || !validEmail(email) || !validAddress(address) || !validPhoneNumber(phoneNumber) || !validPassword(password) {
+	if !validators.ValidName(name) || !validators.ValidName(surname) || !validators.ValidEmail(email) || !validators.ValidAddress(address) || !validators.ValidPhoneNumber(phoneNumber) || !validators.ValidPassword(password) {
 		u.logger.Error("SERVICE: Invalid input")
 		return nil, fmt.Errorf("SERVICE: Invalid input")
 	}

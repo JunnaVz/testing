@@ -7,6 +7,7 @@ import (
 	"lab3/internal/models"
 	"lab3/internal/repository/repository_interfaces"
 	"lab3/internal/services/service_interfaces"
+	"lab3/internal/validators"
 )
 
 type TaskService struct {
@@ -22,7 +23,7 @@ func NewTaskService(TaskRepository repository_interfaces.ITaskRepository, logger
 }
 
 func (t TaskService) Create(name string, price float64, category int) (*models.Task, error) {
-	if !validName(name) || !validPrice(price) || !validCategory(category) {
+	if !validators.ValidName(name) || !validators.ValidPrice(price) || !validators.ValidCategory(category) {
 		t.logger.Error("SERVICE: Invalid input")
 		return nil, fmt.Errorf("SERVICE: Invalid input")
 	}
@@ -50,7 +51,7 @@ func (t TaskService) Update(taskID uuid.UUID, category int, name string, price f
 		return nil, err
 	}
 
-	if !validCategory(category) || !validName(name) || !validPrice(price) {
+	if !validators.ValidCategory(category) || !validators.ValidName(name) || !validators.ValidPrice(price) {
 		t.logger.Error("SERVICE: Invalid input")
 		return nil, fmt.Errorf("SERVICE: Invalid input")
 	} else {
@@ -111,7 +112,7 @@ func (t TaskService) GetTaskByID(id uuid.UUID) (*models.Task, error) {
 
 func (t TaskService) GetTasksInCategory(category int) ([]models.Task, error) {
 	print(category)
-	if !validCategory(category) {
+	if !validators.ValidCategory(category) {
 		t.logger.Error("SERVICE: Invalid category", "category", category)
 		return nil, fmt.Errorf("SERVICE: Invalid category")
 	}

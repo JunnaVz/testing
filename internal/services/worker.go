@@ -7,6 +7,7 @@ import (
 	"lab3/internal/models"
 	"lab3/internal/repository/repository_interfaces"
 	"lab3/internal/services/service_interfaces"
+	"lab3/internal/validators"
 	"lab3/password_hash"
 )
 
@@ -64,7 +65,7 @@ func (w WorkerService) Login(email, password string) (*models.Worker, error) {
 
 func (w WorkerService) Create(worker *models.Worker, password string) (*models.Worker, error) {
 	w.logger.Info("SERVICE: Validating data")
-	if !validName(worker.Name) || !validName(worker.Surname) || !validEmail(worker.Email) || !validAddress(worker.Address) || !validPhoneNumber(worker.PhoneNumber) || !validRole(worker.Role) || !validPassword(password) {
+	if !validators.ValidName(worker.Name) || !validators.ValidName(worker.Surname) || !validators.ValidEmail(worker.Email) || !validators.ValidAddress(worker.Address) || !validators.ValidPhoneNumber(worker.PhoneNumber) || !validators.ValidRole(worker.Role) || !validators.ValidPassword(password) {
 		w.logger.Error("SERVICE: Invalid input")
 		return nil, fmt.Errorf("SERVICE: Invalid input")
 	}
@@ -146,7 +147,7 @@ func (w WorkerService) Update(id uuid.UUID, name string, surname string, email s
 		return nil, err
 	}
 
-	if !validName(name) || !validName(surname) || !validEmail(email) || !validAddress(address) || !validPhoneNumber(phoneNumber) || !validRole(role) || !validPassword(password) {
+	if !validators.ValidName(name) || !validators.ValidName(surname) || !validators.ValidEmail(email) || !validators.ValidAddress(address) || !validators.ValidPhoneNumber(phoneNumber) || !validators.ValidRole(role) || !validators.ValidPassword(password) {
 		w.logger.Error("SERVICE: Invalid input")
 		return nil, fmt.Errorf("SERVICE: Invalid input")
 	} else {

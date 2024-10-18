@@ -1,4 +1,4 @@
-package interfaces
+package validators
 
 import (
 	"github.com/google/uuid"
@@ -8,33 +8,33 @@ import (
 	"time"
 )
 
-func validName(name string) bool {
+func ValidName(name string) bool {
 	return len(name) > 0
 }
 
-func validPrice(price float64) bool {
+func ValidPrice(price float64) bool {
 	return price > 0
 }
 
-func validCategory(category int) bool {
+func ValidCategory(category int) bool {
 	return category > 0 && category < 9
 }
 
-func validEmail(email string) bool {
+func ValidEmail(email string) bool {
 	_, err := mail.ParseAddress(email)
 	return err == nil
 }
 
-func validAddress(address string) bool {
+func ValidAddress(address string) bool {
 	return len(address) > 0
 }
 
-func validPhoneNumber(phoneNumber string) bool {
+func ValidPhoneNumber(phoneNumber string) bool {
 	re := regexp.MustCompile(`^\+\d{1,3}\d{10}$`)
 	return re.MatchString(phoneNumber)
 }
 
-func validPassword(password string) bool {
+func ValidPassword(password string) bool {
 	if len(password) < 8 {
 		return false
 	}
@@ -45,27 +45,27 @@ func validPassword(password string) bool {
 	return reLetter.MatchString(password) && reNumber.MatchString(password)
 }
 
-func validRole(role int) bool {
+func ValidRole(role int) bool {
 	return role > 0 && role < 3
 }
 
-func validDeadline(deadline time.Time) bool {
+func ValidDeadline(deadline time.Time) bool {
 	return deadline.After(time.Now())
 }
 
-func validTasksNumber(tasks []models.OrderedTask) bool {
+func ValidTasksNumber(tasks []models.OrderedTask) bool {
 	return len(tasks) > 0
 }
 
-func validStatus(status int) bool {
+func ValidStatus(status int) bool {
 	return status == models.NewOrderStatus || status == models.InProgressOrderStatus || status == models.CompletedOrderStatus || status == models.CancelledOrderStatus
 }
 
-func validRate(rate int) bool {
+func ValidRate(rate int) bool {
 	return rate >= 0 && rate <= 5
 }
 
-func taskIsAttachedToOrder(taskID uuid.UUID, tasks []models.Task) bool {
+func TaskIsAttachedToOrder(taskID uuid.UUID, tasks []models.Task) bool {
 	for _, task := range tasks {
 		if task.ID == taskID {
 			return true

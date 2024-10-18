@@ -3,14 +3,14 @@ package models
 import "github.com/google/uuid"
 
 type Worker struct {
-	ID          uuid.UUID `json:"id"`
-	Name        string    `json:"name"`
-	Surname     string    `json:"surname"`
-	Address     string    `json:"address"`
-	PhoneNumber string    `json:"phoneNumber"`
-	Email       string    `json:"email"`
-	Role        int       `json:"role"`
-	Password    string    `json:"password"`
+	ID          uuid.UUID
+	Name        string
+	Surname     string
+	Address     string
+	PhoneNumber string
+	Email       string
+	Role        int
+	Password    string
 }
 
 const ManagerRole = 1
