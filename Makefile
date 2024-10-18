@@ -17,7 +17,7 @@ ci-unit:
 	export ALLURE_OUTPUT_PATH="${GITHUB_WORKSPACE}" && \
  	export ALLURE_OUTPUT_FOLDER="unit-allure" && \
  	export DB_INIT_PATH="${GITHUB_WORKSPACE}/db/sql/init.sql" && \
- 	go test -tags=unit ${GITHUB_WORKSPACE}/tests/unit_tests/unit_services/category_test.go
+ 	go test -tags=unit ${GITHUB_WORKSPACE}/tests/unit_tests/unit_services/
 #	${GITHUB_WORKSPACE}/tests/unit_tests/unit_repositories/... --race
 
 local-unit:
